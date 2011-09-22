@@ -1,0 +1,73 @@
+<!doctype html>
+
+<html>
+<head>
+<title>PayJunction-Scriptel Driverless Signature Pad</title>
+  <style>
+    .signature {
+      width: 600px;
+      height: 100px;
+      background: white;
+      border: 1px solid #CCC;
+      cursor: crosshair;
+      display: block;
+    }
+    .shadow-inset  {
+      -moz-box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.05);
+      -webkit-box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.05);
+      box-shadow:inset 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+
+<!--[if lt IE 9]>
+<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+  <div id="container">
+    <header>
+
+    </header>
+    <div id="main" role="main">
+      <form>
+	Give this focus and sign: <input type="text" name="signature" id="signature" /><br />
+	To render, press this button: <input id="draw-sig" type="submit" value="Show Me"/><br />
+  To clear, press this button: <input id="clear-sig" type="submit" value="Clear"/><br />
+      </form>
+
+      <div id='sig-canvas' class='signature shadow-inset'  style="display: block;position: relative;"></div>
+
+    </div>
+
+    <footer>
+
+    </footer>
+  </div> <!--! end of #container -->
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+  <script type="text/javascript" src="http://explorercanvas.googlecode.com/svn/trunk/excanvas.js"></script>
+
+  <script type="text/javascript" src="js/signature.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      $("#sig-canvas").payjunctionSigCap();
+      $("#draw-sig").click(function() {
+        $("#sig-canvas").payjunctionSigCap("showScriptel", $("#signature").val());
+        return false;
+      });
+
+      $("#clear-sig").click(function() {
+        $("#sig-canvas").payjunctionSigCap("clear");
+        $("#signature").val("");
+        return false;
+      });
+
+
+    });
+  </script>
+
+</html>
