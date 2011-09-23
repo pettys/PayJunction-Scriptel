@@ -133,23 +133,30 @@
         returnJSON += "{},"
         i++;
       }
-      if (decoder.msx[notJson.charCodeAt(i)] == undefined) {
+      while (decoder.msx[notJson.charCodeAt(i)] == undefined) {
         console.log("missing msx at " + i + ", value: " + notJson.charCodeAt(i) + ", char: " + notJson.charAt(i));
-      } else {
-        msx = decoder.msx[notJson.charCodeAt(i)];
+        if(notJson.charAt(i) == " ") {
+          returnJSON += "{},"
+        }
+        i++;
       }
+      msx = decoder.msx[notJson.charCodeAt(i)];
+
       if (decoder.lsx[notJson.charCodeAt(i+1)] == undefined) {
         console.log("missing lsx at " + (i+1) + ", value: " + notJson.charCodeAt(i+1) + ", char: " + notJson.charAt(i+1));
+        continue;
       } else {
         lsx = decoder.lsx[notJson.charCodeAt(i+1)];
       }
       if (decoder.msy[notJson.charCodeAt(i+2)] == undefined) {
         console.log("missing msy at " + (i+2) + ", value: " + notJson.charCodeAt(i+2) + ", char: " + notJson.charAt(i+2));
+        continue;
       } else {
         msy = decoder.msy[notJson.charCodeAt(i+2)];
       }
       if (decoder.lsy[notJson.charCodeAt(i+3)] == undefined) {
         console.log("missing lsy at " + (i+3) + ", value: " + notJson.charCodeAt(i+3) + ", char: " + notJson.charAt(i+3));
+        continue;
       } else {
         lsy = decoder.lsy[notJson.charCodeAt(i+3)];
       }
