@@ -4,6 +4,24 @@
 <head>
 <title>PayJunction-Scriptel Driverless Signature Pad</title>
   <style>
+
+	body {
+		margin:50px 0px; padding:0px;
+		text-align:center;
+		font-family: helvetica;
+		color: #333;
+		font-size: 12px;
+	}
+
+	.center {
+		width:600px;
+		margin:0px auto;
+		text-align:left;
+		padding:15px;
+		border:1px dashed #333;
+		background-color:#eee;
+	}
+
     .signature {
       width: 600px;
       height: 100px;
@@ -30,6 +48,15 @@
     <header>
 
     </header>
+
+	<div class="center">
+
+	<img src="images/scriptel-image-3.png"/>
+
+	<hr>
+
+	<br/>
+
     <div id="main" role="main">
       <form>
 	Give this focus and sign: <input type="text" name="signature" id="signature" /><br />
@@ -37,14 +64,26 @@
   To clear, press this button: <input id="clear-sig" type="submit" value="Clear"/><br />
       </form>
 
+	<br/>
+
       <div id='sig-canvas' class='signature shadow-inset'  style="display: block;position: relative;"></div>
 
     </div>
+
+	<br/>
+
+	<hr>
+
+	<p align="center">
+		PayJunction.com  &nbsp;|&nbsp; 800-601-0230 &nbsp;|&nbsp; 1903 State St, Santa Barbara CA &nbsp;|&nbsp; PCI Level 1 Compliant Provider	
+	</p>
 
     <footer>
 
     </footer>
   </div> <!--! end of #container -->
+
+  </div>
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 
