@@ -122,8 +122,7 @@ window.log = function(){
   }
   
   function convertToJson(notJson) {
-    var scriptelregex = /^\}SCRIPTEL(([\x40-\x4c]|[\x23-\x26]|[\x28-\x2a]|\x21|\x5e)([\x4d-\x5a]|\x22|\x3c|\x5f|\x3a|\x3e|\x3f|\x2b|\x7b|\x7c)([\x30-\x39]|[\x61-\x6c])([\x6d-\x7a]|\x27|[\x2c-\x2f]|\x3b|\x3d|\x5b|\x5c)|\x20)*\]$/;
-    
+    var scriptelregex = /^\}SCRIPTEL(((([\x40-\x4c]|[\x23-\x26]|[\x28-\x2a]|\x21|\x5e)([\x4d-\x5a]|\x22|\x3c|\x5f|\x3a|\x3e|\x3f|\x2b|\x7b|\x7c))|(([\x4d-\x5a]|\x22|\x3c|\x5f|\x3a|\x3e|\x3f|\x2b|\x7b|\x7c)([\x40-\x4c]|[\x23-\x26]|[\x28-\x2a]|\x21|\x5e)))((([\x30-\x39]|[\x61-\x6c])([\x6d-\x7a]|\x27|[\x2c-\x2f]|\x3b|\x3d|\x5b|\x5c))|(([\x6d-\x7a]|\x27|[\x2c-\x2f]|\x3b|\x3d|\x5b|\x5c)([\x30-\x39]|[\x61-\x6c])))|\x20)*\]$/;
     var decoder = buildLookupTable();
     
     if (scriptelregex.test(notJson)) {
@@ -149,34 +148,44 @@ window.log = function(){
         returnJSON += "{},"
         i++;
       }
-      while (decoder.msx[notJson.charCodeAt(i)] == undefined) {
-        console.log("missing msx at " + i + ", value: " + notJson.charCodeAt(i) + ", char: " + notJson.charAt(i));
+      while ((typeof decoder.msx[notJson.charCodeAt(i)] === 'undefined') && (typeof decoder.lsx[notJson.charCodeAt(i)] === 'undefined') && i < notJson.length-1) {
+        console.log("missing lsx or msx at " + i + ", value: " + notJson.charCodeAt(i) + ", char: " + notJson.charAt(i));
         if(notJson.charAt(i) == " ") {
           returnJSON += "{},"
         }
         i++;
       }
-      msx = decoder.msx[notJson.charCodeAt(i)];
-
-      if (decoder.lsx[notJson.charCodeAt(i+1)] == undefined) {
-        console.log("missing lsx at " + (i+1) + ", value: " + notJson.charCodeAt(i+1) + ", char: " + notJson.charAt(i+1));
-        continue;
-      } else {
+      
+      if (i+3 > notJson.length - 1) continue;
+      
+      if ((typeof decoder.msx[notJson.charCodeAt(i)] !== 'undefined') && (typeof decoder.lsx[notJson.charCodeAt(i+1)] !== 'undefined')) {
+        msx = decoder.msx[notJson.charCodeAt(i)];
         lsx = decoder.lsx[notJson.charCodeAt(i+1)];
-      }
-      if (decoder.msy[notJson.charCodeAt(i+2)] == undefined) {
-        console.log("missing msy at " + (i+2) + ", value: " + notJson.charCodeAt(i+2) + ", char: " + notJson.charAt(i+2));
-        continue;
+      } else if ((typeof decoder.msx[notJson.charCodeAt(i+1)] !== 'undefined') && (typeof decoder.lsx[notJson.charCodeAt(i)] !== 'undefined')) {
+        msx = decoder.msx[notJson.charCodeAt(i+1)];
+        lsx = decoder.lsx[notJson.charCodeAt(i)];
       } else {
+        // How did I get here?
+        console.log("unexpected error at " + i);
+      }
+
+      if ((typeof decoder.msy[notJson.charCodeAt(i+2)] === 'undefined') && (typeof decoder.lsy[notJson.charCodeAt(i+2)] === 'undefined')) {
+        console.log("missing lsy or msy at " + (i+2) + ", value: " + notJson.charCodeAt(i+2) + ", char: " + notJson.charAt(i+2));
+        continue;
+      }
+        
+      if ((typeof decoder.msy[notJson.charCodeAt(i+2)] !== 'undefined') && (typeof decoder.lsy[notJson.charCodeAt(i+3)] !== 'undefined')) {
         msy = decoder.msy[notJson.charCodeAt(i+2)];
-      }
-      if (decoder.lsy[notJson.charCodeAt(i+3)] == undefined) {
-        console.log("missing lsy at " + (i+3) + ", value: " + notJson.charCodeAt(i+3) + ", char: " + notJson.charAt(i+3));
-        continue;
-      } else {
         lsy = decoder.lsy[notJson.charCodeAt(i+3)];
+      } else if ((typeof decoder.msy[notJson.charCodeAt(i+3)] !== 'undefined') && (typeof decoder.lsy[notJson.charCodeAt(i+2)] !== 'undefined')) {
+        msy = decoder.msy[notJson.charCodeAt(i+3)];
+        lsy = decoder.lsy[notJson.charCodeAt(i+2)];
+      } else {
+        // How did I get here?
+        console.log("unexpected error at " + i);
       }
-      var x = (msx*23+lsx);
+      
+      var x = (msx*23+lsx)+1;
       var y = (msy*23+lsy)*0.2;
       returnJSON += '{"x":' + x + ',"y":' + y + "}";
       if (i+8 < notJson.length-1) {
