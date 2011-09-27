@@ -183,6 +183,10 @@ window.log = function(){
         returnJSON += ","
       }
     }
+
+    if (returnJSON.charAt(returnJSON.length-1) == ',') {
+        returnJSON += "{}";
+    }
     
     returnJSON += "]";
     
