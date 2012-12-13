@@ -59,9 +59,10 @@
 
     <div id="main" role="main">
       <form>
-	Give this focus and sign: <input type="text" name="signature" id="signature" /><br />
-	To render, press this button: <input id="draw-sig" type="submit" value="Show Me"/><br />
-  To clear, press this button: <input id="clear-sig" type="submit" value="Clear"/><br />
+        Give this focus and sign: <input type="text" name="signature" id="signature" />
+        <input id="fill-sample" type="button" value="Sample"/><br />
+        To render, press this button: <input id="draw-sig" type="submit" value="Show Me"/><br />
+        To clear, press this button: <input id="clear-sig" type="submit" value="Clear"/><br />
       </form>
 
 	<br/>
@@ -98,7 +99,9 @@
         $("#sig-canvas").payjunctionSigCap("showScriptel", $("#signature").val());
         return false;
       });
-
+      $("#fill-sample").click(function() {
+        $("#signature").val("}SCRIPTEL A ST1501 01.00.04 ^|ds&Tco&Wbx&Zbn&?ax&<bz&\"cr&<d[*Mew*_dq*|cr*|cq(Mcw(Nc,(Qc=(Ydq ]");
+      });
       $("#clear-sig").click(function() {
         $("#sig-canvas").payjunctionSigCap("clear");
         $("#signature").val("");
